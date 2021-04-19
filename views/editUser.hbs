@@ -4,10 +4,15 @@
         <li class="breadcrumb-item active" aria-current="page">Edit User</li>
       </ol>
     </nav>
-    {{#each rows}}
-<form class="row g-3 needs-validation" method="POST" action="/edituser/{{this.id}}" novalidate>
-  
-      {{> userForm}}
-  
-    </form>
-    {{/each}}
+    {{#if alert}}
+    <div  class="alert alert-info" role="alert">
+      {{alert}}
+    </div>
+      {{/if}}
+          {{#each rows}}
+      <form class="row g-3 needs-validation" method="POST" action="/edituser/{{this.id}}" novalidate>
+        
+            {{> userForm}}
+        
+          </form>
+       {{/each}}

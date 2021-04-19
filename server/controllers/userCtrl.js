@@ -103,7 +103,7 @@ const userCtrl ={
                 console.log('connected as ID'+ connection.threadId);
 
             //user connection
-            connection.query('UPDATE user SET first_name=?, last_name=? WHERE id=?',[first_name, last_name, req.params.id], (err, rows)=>{
+            connection.query('UPDATE user SET first_name=?, last_name=?, email=?, phone=?, comments=? WHERE id=?',[first_name, last_name, email, phone, comments, req.params.id], (err, rows)=>{
                 // when done with the connection, release it
                 connection.release();
                 if(!err){
@@ -117,7 +117,7 @@ const userCtrl ={
                         // when done with the connection, release it
                         connection.release();
                         if(!err){
-                            res.render('editUser', {rows})   
+                            res.render('editUser', {rows, alert:`${first_name} has been updated`})   
                         } else{
                             console.log(err);
                         }
@@ -125,6 +125,44 @@ const userCtrl ={
                     } )    
                     })
                     
+                } else{
+                    console.log(err);
+                }
+                
+            } )    
+            })
+        },
+        delete: (req, res)=>{
+            pool.getConnection((err, connection)=>{
+                if(err) throw err
+                console.log('connected as ID'+ connection.threadId);
+
+            //user connection
+            connection.query('DELETE FROM user WHERE id =?',[req.params.id], (err, rows)=>{
+                // when done with the connection, release it
+                connection.release();
+                if(!err){
+                    res.redirect('/')   
+                } else{
+                    console.log(err);
+                }
+                
+            } )    
+            })
+
+        },
+        viewone:(req, res)=>{
+            // connection to DB
+            pool.getConnection((err, connection)=>{
+                if(err) throw err
+                console.log('connected as ID'+ connection.threadId);
+
+            //user connection
+            connection.query('SELECT * FROM user WHERE id=?',[req.params.id], (err, rows)=>{
+                // when done with the connection, release it
+                connection.release();
+                if(!err){
+                    res.render('viewUser', {rows})   
                 } else{
                     console.log(err);
                 }
